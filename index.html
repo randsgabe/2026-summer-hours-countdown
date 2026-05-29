@@ -1,243 +1,283 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>☀️ Summer Hours Countdown</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; min-height: 100vh; }
+  html { height: 100%; }
+
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(160deg, #fffbe6 0%, #ffe8a0 30%, #ffd6a5 60%, #ffc8c8 85%, #ffb3d9 100%);
+    font-family: 'DM Sans', system-ui, sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem 3rem;
+    justify-content: flex-start;
+    padding: 56px 16px 40px;
     overflow-x: hidden;
     position: relative;
+    /* Solid gradient fallback — no backdrop-filter needed */
+    background: linear-gradient(160deg, #fff7d6 0%, #ffe8a0 25%, #ffd6a5 55%, #ffbebe 80%, #ffb3d9 100%);
   }
-  .blob {
-    position: fixed; border-radius: 50%; filter: blur(60px);
-    pointer-events: none; z-index: 0;
-    animation: blobdrift var(--dur) ease-in-out infinite alternate;
-  }
-  @keyframes blobdrift {
-    from { transform: translate(0,0) scale(1); }
-    to { transform: translate(var(--tx), var(--ty)) scale(1.08); }
-  }
-  .floater {
-    position: fixed; pointer-events: none; z-index: 1;
-    animation: float var(--dur) ease-in-out infinite alternate;
-    opacity: 0.18; font-size: var(--sz);
-  }
-  @keyframes float {
-    from { transform: translateY(0) rotate(var(--r1)); }
-    to { transform: translateY(-18px) rotate(var(--r2)); }
-  }
+
+  /* Rainbow bar */
   .wave-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 10px;
+    position: fixed; top: 0; left: 0; right: 0; height: 8px;
     background: linear-gradient(90deg, #ff6b6b, #ffcc00, #00b4aa, #ff9900, #ff6b6b);
     background-size: 200% 100%;
-    animation: wavemove 4s linear infinite; z-index: 100;
+    animation: wavemove 4s linear infinite;
+    z-index: 100;
   }
   @keyframes wavemove { to { background-position: 200% 0; } }
 
+  /* Floating emojis — hidden on small screens to keep it clean */
+  .floater {
+    position: fixed; pointer-events: none; z-index: 1;
+    animation: float var(--dur) ease-in-out infinite alternate;
+    font-size: var(--sz);
+    opacity: 0.22;
+  }
+  @keyframes float {
+    from { transform: translateY(0) rotate(var(--r1)); }
+    to   { transform: translateY(-14px) rotate(var(--r2)); }
+  }
+  @media (max-width: 500px) { .floater { display: none; } }
+
+  /* Container */
   .container {
-    position: relative; z-index: 10; width: 100%; max-width: 580px;
+    position: relative; z-index: 10;
+    width: 100%; max-width: 540px;
     display: flex; flex-direction: column; align-items: center;
+    gap: 12px;
   }
 
+  /* Sun */
   .sun-face {
-    font-size: 4.5rem; margin-bottom: .5rem;
-    animation: sunjiggle 2.5s ease-in-out infinite; display: block;
-    filter: drop-shadow(0 4px 16px rgba(255,153,0,0.4));
+    font-size: 3.8rem;
+    animation: sunjiggle 2.5s ease-in-out infinite;
+    display: block; margin-bottom: 2px;
+    filter: drop-shadow(0 4px 12px rgba(255,153,0,0.35));
   }
   @keyframes sunjiggle {
     0%,100% { transform: rotate(-6deg) scale(1); }
-    50% { transform: rotate(6deg) scale(1.07); }
+    50%      { transform: rotate(6deg) scale(1.07); }
   }
 
-  .header {
-    text-align: center; margin-bottom: 1.5rem;
-    animation: popIn 0.6s cubic-bezier(.34,1.56,.64,1) both;
-  }
+  /* Header */
+  .header { text-align: center; animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) both; }
   @keyframes popIn {
-    from { opacity:0; transform: scale(0.8) translateY(20px); }
-    to { opacity:1; transform: scale(1) translateY(0); }
+    from { opacity:0; transform: scale(0.85) translateY(16px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
   }
   .eyebrow {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .18em;
-    color: #00b4aa; text-transform: uppercase; margin-bottom: .6rem; font-weight: 500;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .16em;
+    color: #00968c; text-transform: uppercase; margin-bottom: 4px;
   }
   h1 {
-    font-family: 'Pacifico', cursive; font-size: clamp(2rem, 8vw, 3.2rem);
-    color: #ff6b6b; line-height: 1.1;
-    text-shadow: 3px 3px 0 rgba(255,107,107,0.15), 0 2px 20px rgba(255,153,0,0.2);
+    font-family: 'Pacifico', cursive; font-size: clamp(1.9rem, 8vw, 3rem);
+    color: #e84040; line-height: 1.1;
+    text-shadow: 2px 2px 0 rgba(232,64,64,0.12);
   }
-  .subhead { font-size: 13px; color: #3a6a55; margin-top: .5rem; font-weight: 400; }
+  .subhead { font-size: 12px; color: #2d6050; margin-top: 4px; }
 
-  /* ── Shared card style ── */
+  /* ── Shared card ── */
   .card {
     width: 100%;
-    background: rgba(255,255,255,0.72);
-    border: 2px solid rgba(255,255,255,0.9);
-    border-radius: 24px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 24px rgba(255,153,0,0.09), 0 1px 0 rgba(255,255,255,0.8) inset;
+    background: #fff8ee;
+    border-radius: 22px;
+    border: 2px solid rgba(255,255,255,0.95);
+    box-shadow: 0 3px 18px rgba(200,100,50,0.10), 0 1px 0 #fff inset;
   }
 
-  /* ── Since card (drought tracker) ── */
+  /* ── Drought card ── */
   .since-card {
-    padding: 1.25rem 1.75rem 1.1rem;
-    margin-bottom: 1rem;
-    animation: popIn 0.6s 0.06s cubic-bezier(.34,1.56,.64,1) both;
-    border-color: rgba(255,107,107,0.25);
-    background: rgba(255,245,245,0.72);
+    padding: 16px 18px 14px;
+    background: #fff2f2;
+    border-color: rgba(255,160,160,0.4);
+    animation: popIn 0.5s 0.05s both;
   }
   .since-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: .75rem;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
   }
   .since-label {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em;
-    text-transform: uppercase; color: #e05050;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: #c03030; line-height: 1.3;
   }
   .since-badge {
     font-family: 'DM Mono', monospace; font-size: 10px;
-    background: rgba(255,107,107,0.12); color: #cc3333;
-    padding: .2rem .7rem; border-radius: 99px;
-    border: 1px solid rgba(255,107,107,0.2);
+    background: rgba(220,60,60,0.08); color: #b02020;
+    padding: 3px 10px; border-radius: 99px;
+    border: 1px solid rgba(220,60,60,0.18);
+    white-space: nowrap; flex-shrink: 0;
   }
   .since-blocks { display: flex; gap: 8px; }
   .since-block {
-    flex: 1; background: rgba(255,107,107,0.07); border-radius: 14px;
-    padding: .7rem .4rem .6rem; text-align: center;
-    border: 1px solid rgba(255,107,107,0.12);
+    flex: 1; background: rgba(220,60,60,0.06); border-radius: 14px;
+    padding: 10px 4px 8px; text-align: center;
+    border: 1px solid rgba(220,60,60,0.1);
   }
   .since-num {
-    font-family: 'DM Mono', monospace; font-size: clamp(1.3rem,4vw,1.9rem);
-    font-weight: 500; color: #cc3333; line-height: 1; display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    font-weight: 500; color: #c03030; line-height: 1; display: block;
   }
   .since-lbl {
-    font-size: 9px; letter-spacing: .1em; color: #e08080;
+    font-size: 9px; letter-spacing: .1em; color: #d07070;
     text-transform: uppercase; margin-top: 4px; display: block;
   }
   .since-sub {
-    margin-top: .7rem; font-size: 12px; color: #e08080;
-    font-family: 'DM Mono', monospace; text-align: center;
+    margin-top: 10px; font-size: 11px; color: #c07070;
+    font-family: 'DM Mono', monospace; text-align: center; line-height: 1.5;
   }
 
-  /* ── Progress bar ── */
+  /* ── Progress card ── */
   .big-prog {
-    padding: 1.4rem 1.75rem 1.25rem;
-    margin-bottom: 1rem;
-    animation: popIn 0.6s 0.13s cubic-bezier(.34,1.56,.64,1) both;
+    padding: 16px 18px 14px;
+    animation: popIn 0.5s 0.1s both;
   }
-  .prog-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .85rem; }
-  .prog-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #3a6a55; }
-  .prog-pct { font-family: 'Pacifico', cursive; font-size: 1.9rem; color: #ff9900; text-shadow: 2px 2px 0 rgba(255,153,0,0.2); }
-  .track { width: 100%; height: 16px; background: rgba(0,0,0,0.06); border-radius: 99px; overflow: hidden; }
+  .prog-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .prog-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: #2d6050;
+  }
+  .prog-pct {
+    font-family: 'Pacifico', cursive; font-size: 1.75rem;
+    color: #ff8c00; line-height: 1;
+  }
+  .track {
+    width: 100%; height: 14px;
+    background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden;
+  }
   .fill {
     height: 100%; border-radius: 99px;
     background: linear-gradient(90deg, #ff6b6b, #ff9900, #ffcc00);
     background-size: 200% 100%; animation: gradmove 3s linear infinite;
-    transition: width 1s ease; position: relative;
+    transition: width 1s ease; position: relative; overflow: hidden;
   }
   @keyframes gradmove { to { background-position: 200% 0; } }
   .fill::after {
     content:''; position:absolute; top:0;left:-80%;right:0;bottom:0;
-    background: linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
-    animation: shimmer 2s infinite;
+    background: linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+    animation: shimmer 2.2s infinite;
   }
   @keyframes shimmer { to { left: 120%; } }
-  .prog-sub { margin-top:.6rem; font-size:12px; color:#7ab89a; font-family:'DM Mono',monospace; }
+  .prog-sub { margin-top: 8px; font-size: 11px; color: #6aaa88; font-family:'DM Mono',monospace; line-height: 1.4; }
 
   /* ── Countdown blocks ── */
   .blocks {
-    display: flex; gap: 10px; margin-bottom: 1rem; width: 100%;
-    animation: popIn 0.6s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+    display: flex; gap: 8px; width: 100%;
+    animation: popIn 0.5s 0.15s both;
   }
   .block {
-    flex: 1; background: rgba(255,255,255,0.72); border: 2px solid rgba(255,255,255,0.9);
-    border-radius: 20px; padding: 1rem .5rem .8rem; text-align: center;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(255,107,107,0.08), 0 1px 0 rgba(255,255,255,0.9) inset;
+    flex: 1;
+    background: #fff8ee;
+    border: 2px solid rgba(255,255,255,0.95);
+    border-radius: 18px; padding: 14px 4px 10px; text-align: center;
+    box-shadow: 0 3px 12px rgba(200,100,50,0.08), 0 1px 0 #fff inset;
     position: relative; overflow: hidden;
   }
-  .block::after {
-    content:''; position:absolute; top:0;left:0;right:0; height:3px; border-radius:20px 20px 0 0;
+  .block::before {
+    content:''; position:absolute; top:0;left:0;right:0; height:4px;
+    border-radius: 18px 18px 0 0;
   }
-  .block:nth-child(1)::after { background:#ff6b6b; }
-  .block:nth-child(2)::after { background:#ff9900; }
-  .block:nth-child(3)::after { background:#ffcc00; }
-  .block:nth-child(4)::after { background:#00b4aa; }
-  .block-num { font-family:'DM Mono',monospace; font-size:clamp(1.8rem,6vw,2.6rem); font-weight:500; color:#1a3a2a; line-height:1; display:block; }
-  .block-label { font-size:10px; letter-spacing:.12em; color:#7ab89a; text-transform:uppercase; margin-top:5px; display:block; }
+  .block:nth-child(1)::before { background:#ff6b6b; }
+  .block:nth-child(2)::before { background:#ff9900; }
+  .block:nth-child(3)::before { background:#ffcc00; }
+  .block:nth-child(4)::before { background:#00b4aa; }
+  .block-num {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-weight: 500; color: #1a3a2a; line-height: 1; display: block;
+  }
+  .block-label {
+    font-size: 9px; letter-spacing: .12em; color: #7ab89a;
+    text-transform: uppercase; margin-top: 5px; display: block;
+  }
 
-  /* ── Row 2 mini cards ── */
+  /* ── Mini cards row ── */
   .row2 {
-    display: flex; gap: 10px; width: 100%; margin-bottom: 1rem;
-    animation: popIn 0.6s 0.27s cubic-bezier(.34,1.56,.64,1) both;
+    display: flex; gap: 8px; width: 100%;
+    animation: popIn 0.5s 0.2s both;
   }
   .mini-card {
-    flex: 1; background: rgba(255,255,255,0.72); border: 2px solid rgba(255,255,255,0.9);
-    border-radius: 20px; padding: 1rem 1.1rem; backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0,180,170,0.07), 0 1px 0 rgba(255,255,255,0.9) inset;
+    flex: 1; background: #fff8ee;
+    border: 2px solid rgba(255,255,255,0.95);
+    border-radius: 18px; padding: 14px 12px;
+    box-shadow: 0 3px 12px rgba(0,180,170,0.07), 0 1px 0 #fff inset;
   }
-  .mini-icon { font-size: 1.4rem; display: block; margin-bottom: .3rem; }
-  .mini-big { font-family:'DM Mono',monospace; font-size:1.25rem; font-weight:500; color:#1a3a2a; line-height:1.2; }
-  .mini-big em { color:#00b4aa; font-style:normal; }
-  .mini-sub { font-size:11px; color:#7ab89a; margin-top:3px; }
+  .mini-icon { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+  .mini-big {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    font-weight: 500; color: #1a3a2a; line-height: 1.25;
+  }
+  .mini-big em { color: #00968c; font-style: normal; }
+  .mini-sub { font-size: 11px; color: #7ab89a; margin-top: 3px; }
 
-  /* ── Quote ── */
+  /* ── Quote card ── */
   .quote-card {
-    width: 100%; padding: 1.4rem 1.75rem;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0,212,200,0.08), 0 1px 0 rgba(255,255,255,0.9) inset;
+    padding: 18px 20px;
     text-align: center; position: relative; overflow: hidden;
-    animation: popIn 0.6s 0.34s cubic-bezier(.34,1.56,.64,1) both;
-    margin-bottom: 0;
+    animation: popIn 0.5s 0.25s both;
+    background: #fffbf0;
+    border-color: rgba(255,200,80,0.35);
   }
   .quote-mark {
-    font-family:'Pacifico',cursive; font-size:5rem; color:rgba(255,153,0,0.1);
-    position:absolute; top:-1rem;left:.8rem; line-height:1; pointer-events:none;
+    font-family: 'Pacifico', cursive; font-size: 4.5rem;
+    color: rgba(255,153,0,0.09);
+    position: absolute; top: -1rem; left: .6rem;
+    line-height: 1; pointer-events: none;
   }
-  .quote-text { font-size:1rem; color:#1a3a2a; line-height:1.6; position:relative; z-index:1; }
-  .quote-attr { display:block; margin-top:.5rem; font-size:11px; color:#00b4aa; font-family:'DM Mono',monospace; letter-spacing:.08em; }
+  .quote-text {
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    color: #1a3a2a; line-height: 1.6;
+    position: relative; z-index: 1;
+  }
+  .quote-attr {
+    display: block; margin-top: 6px; font-size: 11px;
+    color: #00968c; font-family: 'DM Mono', monospace; letter-spacing: .07em;
+  }
 
   /* ── Status pill ── */
   .status-pill {
-    margin-top: 1rem;
-    display: inline-flex; align-items: center; gap: .4rem;
-    padding: .4rem 1.1rem; border-radius: 99px;
-    background: rgba(255,255,255,0.7); border: 2px solid rgba(255,255,255,0.9);
-    font-size: 11px; font-family:'DM Mono',monospace; color:#3a6a55;
-    letter-spacing:.04em; backdrop-filter:blur(8px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    animation: popIn 0.6s 0.42s cubic-bezier(.34,1.56,.64,1) both;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 16px; border-radius: 99px;
+    background: #fff8ee;
+    border: 2px solid rgba(255,255,255,0.95);
+    font-size: 11px; font-family: 'DM Mono', monospace; color: #2d6050;
+    letter-spacing: .04em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    animation: popIn 0.5s 0.3s both;
   }
-  .dot { width:7px;height:7px;border-radius:50%;background:#ff6b6b;animation:blink 1.4s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.25;} }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ff6b6b; flex-shrink: 0;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
 </style>
 </head>
 <body>
 
 <div class="wave-top"></div>
-<div class="blob" style="width:420px;height:420px;top:-80px;left:-100px;background:#ffe066;opacity:.35;--dur:7s;--tx:30px;--ty:20px;"></div>
-<div class="blob" style="width:340px;height:340px;top:30%;right:-80px;background:#ff9580;opacity:.28;--dur:9s;--tx:-20px;--ty:30px;"></div>
-<div class="blob" style="width:300px;height:300px;bottom:-60px;left:10%;background:#00d4c8;opacity:.22;--dur:8s;--tx:40px;--ty:-20px;"></div>
-<div class="blob" style="width:260px;height:260px;bottom:15%;right:5%;background:#ffb3d9;opacity:.3;--dur:11s;--tx:-30px;--ty:10px;"></div>
-<div class="floater" style="top:8%;left:6%;--sz:2.5rem;--dur:5s;--r1:-10deg;--r2:10deg;">🌊</div>
-<div class="floater" style="top:12%;right:8%;--sz:2rem;--dur:6s;--r1:5deg;--r2:-8deg;">🌴</div>
-<div class="floater" style="top:35%;left:3%;--sz:1.8rem;--dur:7s;--r1:-5deg;--r2:12deg;">🐚</div>
-<div class="floater" style="top:55%;right:4%;--sz:2.2rem;--dur:5.5s;--r1:8deg;--r2:-10deg;">🏖</div>
-<div class="floater" style="bottom:18%;left:7%;--sz:2rem;--dur:8s;--r1:-8deg;--r2:6deg;">🌺</div>
-<div class="floater" style="bottom:10%;right:10%;--sz:1.6rem;--dur:6.5s;--r1:3deg;--r2:-12deg;">🍹</div>
+
+<div class="floater" style="top:8%;left:5%;--sz:2.2rem;--dur:5s;--r1:-10deg;--r2:10deg;">🌊</div>
+<div class="floater" style="top:10%;right:6%;--sz:1.9rem;--dur:6s;--r1:5deg;--r2:-8deg;">🌴</div>
+<div class="floater" style="top:40%;left:2%;--sz:1.7rem;--dur:7s;--r1:-5deg;--r2:12deg;">🐚</div>
+<div class="floater" style="top:55%;right:3%;--sz:2rem;--dur:5.5s;--r1:8deg;--r2:-10deg;">🏖</div>
+<div class="floater" style="bottom:16%;left:5%;--sz:1.8rem;--dur:8s;--r1:-8deg;--r2:6deg;">🌺</div>
+<div class="floater" style="bottom:8%;right:8%;--sz:1.6rem;--dur:6.5s;--r1:3deg;--r2:-12deg;">🍹</div>
 
 <div class="container">
 
@@ -249,11 +289,11 @@
     <p class="subhead">7:30 AM – 4:00 PM · Weekdays only</p>
   </div>
 
-  <!-- SINCE CARD -->
+  <!-- DROUGHT TRACKER -->
   <div class="card since-card">
     <div class="since-header">
-      <span class="since-label">☠️ Summer Hours drought</span>
-      <span class="since-badge">since Sep 5, 2025 · 4:00 PM</span>
+      <span class="since-label">☠️ Summer Hours Drought</span>
+      <span class="since-badge">Since Sep 5, 2025 · 4 PM</span>
     </div>
     <div class="since-blocks">
       <div class="since-block"><span class="since-num" id="sd">--</span><span class="since-lbl">Days</span></div>
@@ -271,10 +311,10 @@
       <span class="prog-pct" id="pct">0%</span>
     </div>
     <div class="track"><div class="fill" id="bar" style="width:0%"></div></div>
-    <div class="prog-sub" id="prog-sub">Calculating...</div>
+    <div class="prog-sub" id="prog-sub">Since May 29 at 7:30 AM</div>
   </div>
 
-  <!-- COUNTDOWN BLOCKS -->
+  <!-- COUNTDOWN -->
   <div class="blocks">
     <div class="block"><span class="block-num" id="d">--</span><span class="block-label">Days</span></div>
     <div class="block"><span class="block-num" id="h">--</span><span class="block-label">Hrs</span></div>
@@ -311,10 +351,11 @@
 </div>
 
 <script>
-const TARGET  = new Date("2026-06-05T12:00:00");
-const LAST_SH = new Date("2025-09-05T16:00:00");
-const WORK_START = 7.5;
-const WORK_END   = 16.0;
+const TARGET      = new Date("2026-06-05T12:00:00");
+const LAST_SH     = new Date("2025-09-05T16:00:00");
+const PROG_START  = new Date("2026-05-29T07:30:00");
+const WORK_START  = 7.5;
+const WORK_END    = 16.0;
 const WORK_MINS_DAY = (WORK_END - WORK_START) * 60;
 
 const quotes = [
@@ -329,9 +370,10 @@ const quotes = [
   { text: "You are so close. The light at the end of the hallway is literally the sun.", attr: "— almost free ☀️" },
 ];
 
-function getWorkHoursLeft() {
+// Work minutes remaining from NOW until TARGET
+function getWorkMinsLeft() {
   const now = new Date();
-  if (now >= TARGET) return { totalMins: 0, isAfter: true };
+  if (now >= TARGET) return { mins: 0, isAfter: true };
   let mins = 0;
   const cur = new Date(now);
   while (cur < TARGET) {
@@ -346,13 +388,13 @@ function getWorkHoursLeft() {
     cur.setDate(cur.getDate()+1);
     cur.setHours(7,30,0,0);
   }
-  return { totalMins: Math.max(0, mins), isAfter: false };
+  return { mins: Math.max(0, mins), isAfter: false };
 }
 
-const PROGRESS_START = new Date("2026-05-29T07:30:00");
+// Total work minutes from PROG_START to TARGET (fixed denominator)
 let TOTAL_WORK_MINS = 0;
 (function(){
-  const cur = new Date(PROGRESS_START);
+  const cur = new Date(PROG_START);
   while (cur < TARGET) {
     const dow = cur.getDay();
     if (dow >= 1 && dow <= 5) {
@@ -367,88 +409,83 @@ let TOTAL_WORK_MINS = 0;
   }
 })();
 
-function isWorkHours() {
-  const now = new Date();
-  const dow = now.getDay();
-  if (dow < 1 || dow > 5) return false;
-  const h = now.getHours() + now.getMinutes()/60;
-  return h >= WORK_START && h < WORK_END;
-}
-
 function pad(n){ return String(n).padStart(2,'0'); }
 function commas(n){ return n.toLocaleString(); }
 
+// Set quote (rotates hourly)
 const q = quotes[Math.floor(Date.now()/3600000) % quotes.length];
 document.getElementById('quote-text').textContent = q.text;
-document.getElementById('quote-attr').textContent = q.attr;
+document.getElementById('quote-attr').textContent  = q.attr;
 
 function tick() {
   const now = new Date();
 
-  // ── Since timer ──
-  const sinceDiff = now - LAST_SH;
-  const sinceSec  = Math.floor(sinceDiff / 1000);
+  // ── Drought timer ──
+  const sinceSec = Math.floor((now - LAST_SH) / 1000);
   document.getElementById('sd').textContent = commas(Math.floor(sinceSec / 86400));
   document.getElementById('sh').textContent = pad(Math.floor((sinceSec % 86400) / 3600));
   document.getElementById('sm').textContent = pad(Math.floor((sinceSec % 3600) / 60));
   document.getElementById('ss').textContent = pad(sinceSec % 60);
-  const sinceHrsTot = Math.floor(sinceSec / 3600);
   document.getElementById('since-sub').textContent =
-    `That's ${commas(sinceHrsTot)} hours of full-day Fridays. The drought ends June 5th. 🌵`;
+    `That's ${commas(Math.floor(sinceSec/3600))} hours of full-day Fridays. The drought ends June 5th. 🌵`;
 
-  // ── Countdown ──
-  const diff = TARGET - now;
-  const { totalMins, isAfter } = getWorkHoursLeft();
+  // ── Countdown to TARGET ──
+  const { mins: minsLeft, isAfter } = getWorkMinsLeft();
 
   if (isAfter) {
-    ['d','h','m','s'].forEach(id => document.getElementById(id).textContent='00');
-    document.getElementById('pct').textContent='100%';
-    document.getElementById('bar').style.width='100%';
-    document.getElementById('prog-sub').textContent='All work hours complete!';
-    document.getElementById('wh-big').innerHTML='<em>0</em> hrs <em>0</em> min';
-    document.getElementById('today-prog').textContent='🎉 Done!';
-    document.getElementById('today-label').textContent='summer hours started!';
-    document.getElementById('status-txt').textContent='🎉 Summer hours are HERE!';
-    document.getElementById('quote-text').textContent="You made it. Go enjoy that sunshine — you earned every single minute.";
-    document.getElementById('quote-attr').textContent="— Congratulations! 🌴🍹☀️";
+    ['d','h','m','s'].forEach(id => document.getElementById(id).textContent = '00');
+    document.getElementById('pct').textContent = '100%';
+    document.getElementById('bar').style.width = '100%';
+    document.getElementById('prog-sub').textContent = 'All work hours survived! 🎉';
+    document.getElementById('wh-big').innerHTML = '<em>0</em> hrs <em>0</em> min';
+    document.getElementById('today-prog').textContent = '🎉 Done!';
+    document.getElementById('today-label').textContent = 'summer hours started!';
+    document.getElementById('status-txt').textContent  = '🎉 Summer hours are HERE!';
+    document.getElementById('quote-text').textContent  = "You made it. Go enjoy that sunshine — you earned every single minute.";
+    document.getElementById('quote-attr').textContent  = "— Congratulations! 🌴🍹☀️";
     return;
   }
 
-  const totalSec = Math.floor(diff / 1000);
-  document.getElementById('d').textContent = Math.floor(totalSec/86400);
-  document.getElementById('h').textContent = pad(Math.floor((totalSec%86400)/3600));
-  document.getElementById('m').textContent = pad(Math.floor((totalSec%3600)/60));
-  document.getElementById('s').textContent = pad(totalSec%60);
+  const totalSec = Math.floor((TARGET - now) / 1000);
+  document.getElementById('d').textContent = Math.floor(totalSec / 86400);
+  document.getElementById('h').textContent = pad(Math.floor((totalSec % 86400) / 3600));
+  document.getElementById('m').textContent = pad(Math.floor((totalSec % 3600) / 60));
+  document.getElementById('s').textContent = pad(totalSec % 60);
 
-  const workedMins = TOTAL_WORK_MINS - totalMins;
-  const pct = TOTAL_WORK_MINS > 0 ? Math.min(100, Math.max(0, Math.round(100 * workedMins / TOTAL_WORK_MINS))) : 0;
-  document.getElementById('pct').textContent = pct+'%';
-  document.getElementById('bar').style.width = pct+'%';
-  document.getElementById('prog-sub').textContent = `since May 29 at 7:30 AM · ${pct}% of the final stretch survived`;
+  // Progress bar
+  const workedMins = TOTAL_WORK_MINS - minsLeft;
+  const pct = TOTAL_WORK_MINS > 0
+    ? Math.min(100, Math.max(0, Math.round(100 * workedMins / TOTAL_WORK_MINS)))
+    : 0;
+  document.getElementById('pct').textContent      = pct + '%';
+  document.getElementById('bar').style.width      = pct + '%';
+  document.getElementById('prog-sub').textContent = `Since May 29 at 7:30 AM · ${pct}% of the final stretch survived`;
 
-  const wh = Math.floor(totalMins/60);
-  const wm = Math.round(totalMins%60);
+  // Work hours left card
+  const wh = Math.floor(minsLeft / 60);
+  const wm = Math.round(minsLeft % 60);
   document.getElementById('wh-big').innerHTML = `<em>${wh}</em> hrs <em>${wm}</em> min`;
 
-  const h = now.getHours() + now.getMinutes()/60 + now.getSeconds()/3600;
+  // Today's card
+  const h   = now.getHours() + now.getMinutes()/60 + now.getSeconds()/3600;
   const dow = now.getDay();
   if (dow >= 1 && dow <= 5 && h >= WORK_START && h < WORK_END) {
-    const minsIntoDay = (h - WORK_START) * 60;
-    const todayPct = Math.round(100 * minsIntoDay / WORK_MINS_DAY);
-    const minsLeft = Math.round((WORK_END - h) * 60);
-    document.getElementById('today-prog').innerHTML = `<em>${todayPct}%</em> done`;
-    document.getElementById('today-label').textContent = `${minsLeft} min left today`;
+    const todayPct  = Math.round(100 * (h - WORK_START) / (WORK_END - WORK_START));
+    const minsToEnd = Math.round((WORK_END - h) * 60);
+    document.getElementById('today-prog').innerHTML    = `<em>${todayPct}%</em> done`;
+    document.getElementById('today-label').textContent = `${minsToEnd} min left today`;
   } else if (dow >= 1 && dow <= 5 && h < WORK_START) {
-    document.getElementById('today-prog').textContent = 'Not yet';
+    document.getElementById('today-prog').textContent  = 'Not yet';
     document.getElementById('today-label').textContent = 'work starts at 7:30 AM';
   } else if (dow >= 1 && dow <= 5 && h >= WORK_END) {
-    document.getElementById('today-prog').textContent = '✅ Done';
+    document.getElementById('today-prog').textContent  = '✅ Done';
     document.getElementById('today-label').textContent = "you're off the clock!";
   } else {
-    document.getElementById('today-prog').textContent = '🌊 Weekend';
+    document.getElementById('today-prog').textContent  = '🌊 Weekend';
     document.getElementById('today-label').textContent = 'enjoy the time off!';
   }
 
+  // Status pill
   if (dow === 0 || dow === 6) {
     document.getElementById('status-txt').textContent = "It's the weekend — you're off the clock 🎉";
   } else if (h >= WORK_START && h < WORK_END) {
