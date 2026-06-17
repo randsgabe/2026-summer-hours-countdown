@@ -2,502 +2,466 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>☀️ Summer Hours Countdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wizarding Archive — Timeline &amp; Birthdays</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Spectral:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { height: 100%; }
+:root{
+  --ink:#11151c;
+  --ink-soft:#171c25;
+  --panel:#1c222d;
+  --panel-edge:#2a323f;
+  --parchment:#f1e9d8;
+  --parchment-dim:#bdb4a1;
+  --gold:#c9a227;
+  --gold-soft:#e3c468;
+  --burgundy:#8a2a36;
+  --ember:#c1573d;
+  --slate:#5b6573;
+  --focus:#e3c468;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--parchment);
+  font-family:'Spectral', serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+a{color:var(--gold-soft);}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:3px;}
 
-  body {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 56px 16px 40px;
-    overflow-x: hidden;
-    position: relative;
-    /* Solid gradient fallback — no backdrop-filter needed */
-    background: linear-gradient(160deg, #fff7d6 0%, #ffe8a0 25%, #ffd6a5 55%, #ffbebe 80%, #ffb3d9 100%);
-  }
+.bg-glow{
+  position:fixed; inset:0; z-index:-1;
+  background:
+    radial-gradient(ellipse 800px 500px at 15% -5%, rgba(201,162,39,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 100% 10%, rgba(138,42,54,0.10), transparent 55%),
+    var(--ink);
+}
 
-  /* Rainbow bar */
-  .wave-top {
-    position: fixed; top: 0; left: 0; right: 0; height: 8px;
-    background: linear-gradient(90deg, #ff6b6b, #ffcc00, #00b4aa, #ff9900, #ff6b6b);
-    background-size: 200% 100%;
-    animation: wavemove 4s linear infinite;
-    z-index: 100;
-  }
-  @keyframes wavemove { to { background-position: 200% 0; } }
+/* ---------- HERO ---------- */
+.hero{
+  padding:76px 24px 48px;
+  text-align:center;
+  position:relative;
+  border-bottom:1px solid var(--panel-edge);
+}
+.hero-inner{max-width:760px; margin:0 auto;}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  font-size:12px;
+  color:var(--gold-soft);
+  margin:0 0 18px;
+}
+.hero h1{
+  font-family:'Cormorant Garamond', serif;
+  font-weight:700;
+  font-size:clamp(40px, 7vw, 68px);
+  margin:0 0 18px;
+  color:var(--parchment);
+  letter-spacing:0.01em;
+}
+.hero .subtitle{
+  font-size:17px;
+  color:var(--parchment-dim);
+  max-width:560px;
+  margin:0 auto 36px;
+}
+.stat-strip{
+  display:flex; justify-content:center; gap:40px; flex-wrap:wrap;
+}
+.stat{display:flex; flex-direction:column; gap:4px;}
+.stat-num{
+  font-family:'Cormorant Garamond', serif;
+  font-weight:700; font-size:32px; color:var(--gold);
+}
+.stat-label{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--parchment-dim);
+}
 
-  /* Floating emojis — hidden on small screens to keep it clean */
-  .floater {
-    position: fixed; pointer-events: none; z-index: 1;
-    animation: float var(--dur) ease-in-out infinite alternate;
-    font-size: var(--sz);
-    opacity: 0.22;
-  }
-  @keyframes float {
-    from { transform: translateY(0) rotate(var(--r1)); }
-    to   { transform: translateY(-14px) rotate(var(--r2)); }
-  }
-  @media (max-width: 500px) { .floater { display: none; } }
+/* ---------- ESSENTIAL DATES ---------- */
+.essential{padding:44px 24px 8px; max-width:1100px; margin:0 auto;}
+.section-label{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--parchment-dim); text-align:center; margin:0 0 22px;
+}
+.essential-row{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:14px;
+}
+@media (max-width:880px){.essential-row{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.essential-row{grid-template-columns:1fr;}}
+.essential-card{
+  background:var(--panel);
+  border:1px solid var(--panel-edge);
+  border-top:2px solid var(--gold);
+  padding:16px 14px;
+  border-radius:4px;
+}
+.essential-card .e-date{
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px; color:var(--gold-soft); margin:0 0 8px;
+}
+.essential-card .e-why{margin:0; font-size:14.5px; color:var(--parchment);}
 
-  /* Container */
-  .container {
-    position: relative; z-index: 10;
-    width: 100%; max-width: 540px;
-    display: flex; flex-direction: column; align-items: center;
-    gap: 12px;
-  }
+/* ---------- TABS ---------- */
+.tabs{
+  max-width:1100px; margin:48px auto 0; padding:0 24px;
+  display:flex; gap:8px; border-bottom:1px solid var(--panel-edge);
+}
+.tab{
+  background:none; border:none; cursor:pointer;
+  font-family:'Cormorant Garamond', serif; font-weight:600;
+  font-size:19px; color:var(--parchment-dim);
+  padding:10px 6px 14px; position:relative;
+}
+.tab.active{color:var(--parchment);}
+.tab.active::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--gold);
+}
+.tab:hover{color:var(--gold-soft);}
 
-  /* Sun */
-  .sun-face {
-    font-size: 3.8rem;
-    animation: sunjiggle 2.5s ease-in-out infinite;
-    display: block; margin-bottom: 2px;
-    filter: drop-shadow(0 4px 12px rgba(255,153,0,0.35));
-  }
-  @keyframes sunjiggle {
-    0%,100% { transform: rotate(-6deg) scale(1); }
-    50%      { transform: rotate(6deg) scale(1.07); }
-  }
+/* ---------- CONTROLS ---------- */
+.controls{max-width:1100px; margin:0 auto; padding:28px 24px 8px;}
+#searchInput{
+  width:100%; background:var(--panel); border:1px solid var(--panel-edge);
+  color:var(--parchment); font-family:'Spectral', serif; font-size:15px;
+  padding:12px 16px; border-radius:6px; margin-bottom:22px;
+}
+#searchInput::placeholder{color:var(--slate);}
+.filter-group{margin-bottom:18px;}
+.filter-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:10px;}
+.filter-title{
+  font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--parchment-dim);
+}
+.show-all{
+  background:none; border:none; color:var(--gold-soft); font-family:'JetBrains Mono', monospace;
+  font-size:11.5px; cursor:pointer; text-decoration:underline; padding:0;
+}
+.chip-row{display:flex; flex-wrap:wrap; gap:7px; max-height:74px; overflow:hidden; transition:max-height 0.25s ease;}
+.chip-row.expanded{max-height:1000px;}
+.chip{
+  background:transparent; border:1px solid var(--slate); color:var(--parchment-dim);
+  font-family:'JetBrains Mono', monospace; font-size:12px;
+  padding:6px 11px; border-radius:100px; cursor:pointer; white-space:nowrap;
+  transition:all 0.15s ease;
+}
+.chip:hover{border-color:var(--gold-soft); color:var(--parchment);}
+.chip.selected{background:var(--gold); border-color:var(--gold); color:#1c1404; font-weight:600;}
+.active-filters-row{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-top:18px; padding-top:14px; border-top:1px solid var(--panel-edge);
+  font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--parchment-dim);
+}
+#clearFilters{
+  background:none; border:1px solid var(--slate); color:var(--parchment-dim);
+  font-family:'JetBrains Mono', monospace; font-size:12px; padding:6px 14px;
+  border-radius:100px; cursor:pointer;
+}
+#clearFilters:hover{border-color:var(--ember); color:var(--ember);}
 
-  /* Header */
-  .header { text-align: center; animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) both; }
-  @keyframes popIn {
-    from { opacity:0; transform: scale(0.85) translateY(16px); }
-    to   { opacity:1; transform: scale(1) translateY(0); }
-  }
-  .eyebrow {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .16em;
-    color: #00968c; text-transform: uppercase; margin-bottom: 4px;
-  }
-  h1 {
-    font-family: 'Pacifico', cursive; font-size: clamp(1.9rem, 8vw, 3rem);
-    color: #e84040; line-height: 1.1;
-    text-shadow: 2px 2px 0 rgba(232,64,64,0.12);
-  }
-  .subhead { font-size: 12px; color: #2d6050; margin-top: 4px; }
+/* ---------- MAIN / TIMELINE ---------- */
+main{max-width:1100px; margin:0 auto; padding:28px 24px 80px;}
+.view{display:none;}
+.view.active{display:block;}
 
-  /* ── Shared card ── */
-  .card {
-    width: 100%;
-    background: #fff8ee;
-    border-radius: 22px;
-    border: 2px solid rgba(255,255,255,0.95);
-    box-shadow: 0 3px 18px rgba(200,100,50,0.10), 0 1px 0 #fff inset;
-  }
+.entries{position:relative; padding-left:34px; border-left:2px solid var(--panel-edge);}
+.entry-card{position:relative; padding:0 0 30px 26px;}
+.entry-card::before{
+  content:""; position:absolute; left:-43px; top:4px; width:11px; height:11px;
+  border-radius:50%; background:var(--ink); border:2px solid var(--gold);
+}
+.entry-seal{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:58px; height:30px; padding:0 10px;
+  border:1px solid var(--gold); border-radius:4px; color:var(--gold-soft);
+  font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:600;
+  margin-bottom:8px;
+}
+.entry-date{
+  font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--parchment-dim);
+  margin:0 0 6px; display:inline-block; margin-left:10px;
+}
+.entry-event{margin:6px 0 10px; font-size:16px; color:var(--parchment);}
+.entry-tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;}
+.pill{
+  font-family:'JetBrains Mono', monospace; font-size:11px; padding:3px 9px;
+  border-radius:100px; white-space:nowrap;
+}
+.pill.fam{background:rgba(201,162,39,0.12); color:var(--gold-soft); border:1px solid rgba(201,162,39,0.35);}
+.pill.loc{background:rgba(138,42,54,0.14); color:#e0a392; border:1px solid rgba(138,42,54,0.4);}
+.entry-notes{margin:6px 0 0; font-size:12.5px; color:var(--slate); font-style:italic;}
+.entry-source{font-size:11.5px; margin-left:8px;}
+.no-results{padding:40px 0; text-align:center; color:var(--parchment-dim); font-style:italic;}
 
-  /* ── Drought card ── */
-  .since-card {
-    padding: 16px 18px 14px;
-    background: #fff2f2;
-    border-color: rgba(255,160,160,0.4);
-    animation: popIn 0.5s 0.05s both;
-  }
-  .since-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
-  }
-  .since-label {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em;
-    text-transform: uppercase; color: #c03030; line-height: 1.3;
-  }
-  .since-badge {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    background: rgba(220,60,60,0.08); color: #b02020;
-    padding: 3px 10px; border-radius: 99px;
-    border: 1px solid rgba(220,60,60,0.18);
-    white-space: nowrap; flex-shrink: 0;
-  }
-  .since-blocks { display: flex; gap: 8px; }
-  .since-block {
-    flex: 1; background: rgba(220,60,60,0.06); border-radius: 14px;
-    padding: 10px 4px 8px; text-align: center;
-    border: 1px solid rgba(220,60,60,0.1);
-  }
-  .since-num {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(1.25rem, 5vw, 1.75rem);
-    font-weight: 500; color: #c03030; line-height: 1; display: block;
-  }
-  .since-lbl {
-    font-size: 9px; letter-spacing: .1em; color: #d07070;
-    text-transform: uppercase; margin-top: 4px; display: block;
-  }
-  .since-sub {
-    margin-top: 10px; font-size: 11px; color: #c07070;
-    font-family: 'DM Mono', monospace; text-align: center; line-height: 1.5;
-  }
+/* ---------- BIRTHDAYS ---------- */
+.months{display:grid; gap:30px;}
+.month-block{}
+.month-title{
+  font-family:'Cormorant Garamond', serif; font-weight:700; font-size:24px;
+  color:var(--gold); margin:0 0 14px; padding-bottom:8px; border-bottom:1px solid var(--panel-edge);
+}
+.birthday-list{display:grid; gap:10px;}
+.birthday-card{
+  background:var(--panel); border:1px solid var(--panel-edge); border-radius:6px;
+  padding:14px 16px; display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px;
+}
+.bday-date{
+  font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--gold-soft);
+  min-width:62px;
+}
+.bday-name{font-family:'Cormorant Garamond', serif; font-weight:600; font-size:19px; color:var(--parchment);}
+.bday-year{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--parchment-dim);}
+.bday-tags{display:flex; flex-wrap:wrap; gap:6px; width:100%; margin-top:2px;}
 
-  /* ── Progress card ── */
-  .big-prog {
-    padding: 16px 18px 14px;
-    animation: popIn 0.5s 0.1s both;
-  }
-  .prog-row {
-    display: flex; justify-content: space-between; align-items: baseline;
-    margin-bottom: 10px;
-  }
-  .prog-label {
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .1em;
-    text-transform: uppercase; color: #2d6050;
-  }
-  .prog-pct {
-    font-family: 'Pacifico', cursive; font-size: 1.75rem;
-    color: #ff8c00; line-height: 1;
-  }
-  .track {
-    width: 100%; height: 14px;
-    background: rgba(0,0,0,0.07); border-radius: 99px; overflow: hidden;
-  }
-  .fill {
-    height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, #ff6b6b, #ff9900, #ffcc00);
-    background-size: 200% 100%; animation: gradmove 3s linear infinite;
-    transition: width 1s ease; position: relative; overflow: hidden;
-  }
-  @keyframes gradmove { to { background-position: 200% 0; } }
-  .fill::after {
-    content:''; position:absolute; top:0;left:-80%;right:0;bottom:0;
-    background: linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
-    animation: shimmer 2.2s infinite;
-  }
-  @keyframes shimmer { to { left: 120%; } }
-  .prog-sub { margin-top: 8px; font-size: 11px; color: #6aaa88; font-family:'DM Mono',monospace; line-height: 1.4; }
-
-  /* ── Countdown blocks ── */
-  .blocks {
-    display: flex; gap: 8px; width: 100%;
-    animation: popIn 0.5s 0.15s both;
-  }
-  .block {
-    flex: 1;
-    background: #fff8ee;
-    border: 2px solid rgba(255,255,255,0.95);
-    border-radius: 18px; padding: 14px 4px 10px; text-align: center;
-    box-shadow: 0 3px 12px rgba(200,100,50,0.08), 0 1px 0 #fff inset;
-    position: relative; overflow: hidden;
-  }
-  .block::before {
-    content:''; position:absolute; top:0;left:0;right:0; height:4px;
-    border-radius: 18px 18px 0 0;
-  }
-  .block:nth-child(1)::before { background:#ff6b6b; }
-  .block:nth-child(2)::before { background:#ff9900; }
-  .block:nth-child(3)::before { background:#ffcc00; }
-  .block:nth-child(4)::before { background:#00b4aa; }
-  .block-num {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(1.6rem, 7vw, 2.4rem);
-    font-weight: 500; color: #1a3a2a; line-height: 1; display: block;
-  }
-  .block-label {
-    font-size: 9px; letter-spacing: .12em; color: #7ab89a;
-    text-transform: uppercase; margin-top: 5px; display: block;
-  }
-
-  /* ── Mini cards row ── */
-  .row2 {
-    display: flex; gap: 8px; width: 100%;
-    animation: popIn 0.5s 0.2s both;
-  }
-  .mini-card {
-    flex: 1; background: #fff8ee;
-    border: 2px solid rgba(255,255,255,0.95);
-    border-radius: 18px; padding: 14px 12px;
-    box-shadow: 0 3px 12px rgba(0,180,170,0.07), 0 1px 0 #fff inset;
-  }
-  .mini-icon { font-size: 1.3rem; display: block; margin-bottom: 4px; }
-  .mini-big {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(1rem, 4vw, 1.2rem);
-    font-weight: 500; color: #1a3a2a; line-height: 1.25;
-  }
-  .mini-big em { color: #00968c; font-style: normal; }
-  .mini-sub { font-size: 11px; color: #7ab89a; margin-top: 3px; }
-
-  /* ── Quote card ── */
-  .quote-card {
-    padding: 18px 20px;
-    text-align: center; position: relative; overflow: hidden;
-    animation: popIn 0.5s 0.25s both;
-    background: #fffbf0;
-    border-color: rgba(255,200,80,0.35);
-  }
-  .quote-mark {
-    font-family: 'Pacifico', cursive; font-size: 4.5rem;
-    color: rgba(255,153,0,0.09);
-    position: absolute; top: -1rem; left: .6rem;
-    line-height: 1; pointer-events: none;
-  }
-  .quote-text {
-    font-family: 'DM Sans', sans-serif; font-size: 15px;
-    color: #1a3a2a; line-height: 1.6;
-    position: relative; z-index: 1;
-  }
-  .quote-attr {
-    display: block; margin-top: 6px; font-size: 11px;
-    color: #00968c; font-family: 'DM Mono', monospace; letter-spacing: .07em;
-  }
-
-  /* ── Status pill ── */
-  .status-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 16px; border-radius: 99px;
-    background: #fff8ee;
-    border: 2px solid rgba(255,255,255,0.95);
-    font-size: 11px; font-family: 'DM Mono', monospace; color: #2d6050;
-    letter-spacing: .04em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    animation: popIn 0.5s 0.3s both;
-  }
-  .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: #ff6b6b; flex-shrink: 0;
-    animation: blink 1.4s ease-in-out infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+/* ---------- FOOTER ---------- */
+footer{
+  max-width:1100px; margin:0 auto; padding:30px 24px 60px;
+  border-top:1px solid var(--panel-edge); color:var(--slate); font-size:13px;
+}
+footer p{margin:0;}
 </style>
 </head>
 <body>
+<div class="bg-glow"></div>
 
-<div class="wave-top"></div>
-
-<div class="floater" style="top:8%;left:5%;--sz:2.2rem;--dur:5s;--r1:-10deg;--r2:10deg;">🌊</div>
-<div class="floater" style="top:10%;right:6%;--sz:1.9rem;--dur:6s;--r1:5deg;--r2:-8deg;">🌴</div>
-<div class="floater" style="top:40%;left:2%;--sz:1.7rem;--dur:7s;--r1:-5deg;--r2:12deg;">🐚</div>
-<div class="floater" style="top:55%;right:3%;--sz:2rem;--dur:5.5s;--r1:8deg;--r2:-10deg;">🏖</div>
-<div class="floater" style="bottom:16%;left:5%;--sz:1.8rem;--dur:8s;--r1:-8deg;--r2:6deg;">🌺</div>
-<div class="floater" style="bottom:8%;right:8%;--sz:1.6rem;--dur:6.5s;--r1:3deg;--r2:-12deg;">🍹</div>
-
-<div class="container">
-
-  <span class="sun-face">☀️</span>
-
-  <div class="header">
-    <p class="eyebrow">June 5, 2026 · 12:00 PM</p>
-    <h1>Summer Hours!</h1>
-    <p class="subhead">7:30 AM – 4:00 PM · Weekdays only</p>
-  </div>
-
-  <!-- DROUGHT TRACKER -->
-  <div class="card since-card">
-    <div class="since-header">
-      <span class="since-label">☠️ Summer Hours Drought</span>
-      <span class="since-badge">Since Sep 5, 2025 · 4 PM</span>
-    </div>
-    <div class="since-blocks">
-      <div class="since-block"><span class="since-num" id="sd">--</span><span class="since-lbl">Days</span></div>
-      <div class="since-block"><span class="since-num" id="sh">--</span><span class="since-lbl">Hrs</span></div>
-      <div class="since-block"><span class="since-num" id="sm">--</span><span class="since-lbl">Min</span></div>
-      <div class="since-block"><span class="since-num" id="ss">--</span><span class="since-lbl">Sec</span></div>
-    </div>
-    <div class="since-sub" id="since-sub">Calculating the pain...</div>
-  </div>
-
-  <!-- PROGRESS BAR -->
-  <div class="card big-prog">
-    <div class="prog-row">
-      <span class="prog-label">Work hours survived</span>
-      <span class="prog-pct" id="pct">0%</span>
-    </div>
-    <div class="track"><div class="fill" id="bar" style="width:0%"></div></div>
-    <div class="prog-sub" id="prog-sub">Since May 29 at 7:30 AM</div>
-  </div>
-
-  <!-- COUNTDOWN -->
-  <div class="blocks">
-    <div class="block"><span class="block-num" id="d">--</span><span class="block-label">Days</span></div>
-    <div class="block"><span class="block-num" id="h">--</span><span class="block-label">Hrs</span></div>
-    <div class="block"><span class="block-num" id="m">--</span><span class="block-label">Min</span></div>
-    <div class="block"><span class="block-num" id="s">--</span><span class="block-label">Sec</span></div>
-  </div>
-
-  <!-- MINI CARDS -->
-  <div class="row2">
-    <div class="mini-card">
-      <span class="mini-icon">⏱️</span>
-      <div class="mini-big" id="wh-big">-- hrs -- min</div>
-      <div class="mini-sub">work hours left</div>
-    </div>
-    <div class="mini-card">
-      <span class="mini-icon">📅</span>
-      <div class="mini-big" id="today-prog">--</div>
-      <div class="mini-sub" id="today-label">today's progress</div>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">A field archive of the wizarding world</p>
+    <h1>The Wizarding Archive</h1>
+    <p class="subtitle">Every confirmed turning point and birthday in the Harry Potter universe, cross-referenced and tagged by family and location.</p>
+    <div class="stat-strip">
+      <div class="stat"><span class="stat-num" id="statEvents">–</span><span class="stat-label">Historical Events</span></div>
+      <div class="stat"><span class="stat-num" id="statBdays">–</span><span class="stat-label">Birthdays</span></div>
+      <div class="stat"><span class="stat-num">990–2017</span><span class="stat-label">Years Spanned</span></div>
     </div>
   </div>
+</header>
 
-  <!-- QUOTE -->
-  <div class="card quote-card">
-    <div class="quote-mark">"</div>
-    <p class="quote-text" id="quote-text">Loading your daily encouragement...</p>
-    <span class="quote-attr" id="quote-attr"></span>
+<section class="essential">
+  <p class="section-label">Five dates everyone should know</p>
+  <div class="essential-row" id="essentialRow"></div>
+</section>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="timeline">Historical Timeline</button>
+  <button class="tab" data-tab="birthdays">Birthday Calendar</button>
+</nav>
+
+<section class="controls">
+  <input type="search" id="searchInput" placeholder="Search by character, event, or place…">
+
+  <div class="filter-group">
+    <div class="filter-head">
+      <span class="filter-title">Filter by Family / Affiliation</span>
+      <button class="show-all" data-target="family">show all tags</button>
+    </div>
+    <div class="chip-row" id="familyChips"></div>
   </div>
 
-  <div class="status-pill">
-    <div class="dot"></div>
-    <span id="status-txt">Checking your schedule...</span>
+  <div class="filter-group">
+    <div class="filter-head">
+      <span class="filter-title">Filter by Location</span>
+      <button class="show-all" data-target="location">show all tags</button>
+    </div>
+    <div class="chip-row" id="locationChips"></div>
   </div>
 
-</div>
+  <div class="active-filters-row">
+    <span id="resultCount"></span>
+    <button id="clearFilters">Clear filters</button>
+  </div>
+</section>
+
+<main>
+  <section id="timelineView" class="view active">
+    <div class="entries" id="timelineEntries"></div>
+  </section>
+  <section id="birthdaysView" class="view">
+    <div class="months" id="birthdayMonths"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Compiled from the HP Lexicon timeline and birthday archives as a fan reference. Entries marked "year not listed," "approximate," or "inferred" reflect genuine gaps in canon, not certainty. Not affiliated with Warner Bros. or J.K. Rowling.</p>
+</footer>
 
 <script>
-const TARGET      = new Date("2026-06-05T12:00:00");
-const LAST_SH     = new Date("2025-09-05T16:00:00");
-const PROG_START  = new Date("2026-05-29T07:30:00");
-const WORK_START  = 7.5;
-const WORK_END    = 16.0;
-const WORK_MINS_DAY = (WORK_END - WORK_START) * 60;
+const TIMELINE = [{"year": 990, "date": "c. 990s", "event": "Hogwarts is founded by Godric Gryffindor, Salazar Slytherin, Rowena Ravenclaw, and Helga Hufflepuff.", "family": ["Founders", "Hogwarts"], "location": ["Hogwarts, Scotland"], "source": null, "notes": "Approximate era"}, {"year": 1692, "date": "1692", "event": "International Statute of Wizarding Secrecy goes into effect, hiding the wizarding world from Muggles.", "family": ["Ministry", "Wizarding government"], "location": ["International"], "source": null, "notes": "Historical canon"}, {"year": 1899, "date": "1899", "event": "Ariana Dumbledore dies; Albus Dumbledore and Gellert Grindelwald’s youthful alliance collapses.", "family": ["Dumbledore", "Grindelwald"], "location": ["Godric’s Hollow"], "source": null, "notes": "Historical canon"}, {"year": 1926, "date": "1926-12-31", "event": "Tom Marvolo Riddle, later Lord Voldemort, is born.", "family": ["Riddle", "Gaunt", "Voldemort"], "location": ["London"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Birthday"}, {"year": 1938, "date": "1938", "event": "Tom Riddle begins at Hogwarts.", "family": ["Riddle", "Slytherin"], "location": ["Hogwarts"], "source": null, "notes": "School timeline"}, {"year": 1943, "date": "1943-06", "event": "Myrtle Warren is killed; the Chamber of Secrets is opened; Hagrid is blamed and expelled.", "family": ["Riddle", "Hagrid", "Hogwarts"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/event/page/18/", "notes": "Month known"}, {"year": 1943, "date": "1943-09", "event": "Tom Riddle turns his diary into a Horcrux.", "family": ["Riddle", "Voldemort"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/event/page/18/", "notes": "Month known"}, {"year": 1945, "date": "1945", "event": "Dumbledore defeats Grindelwald and wins the Elder Wand.", "family": ["Dumbledore", "Grindelwald"], "location": ["Europe", "Nurmengard era"], "source": "https://www.hp-lexicon.org/event/page/18/", "notes": "Historical canon"}, {"year": 1970, "date": "1970–1981", "event": "First Wizarding War: Voldemort’s first rise to power.", "family": ["Order of the Phoenix", "Death Eaters"], "location": ["Britain"], "source": null, "notes": "Date range"}, {"year": 1979, "date": "1979", "event": "James Potter and Lily Evans marry; Sirius Black is best man.", "family": ["Potter", "Black", "Evans"], "location": ["Britain"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Year known"}, {"year": 1980, "date": "1980-07-31", "event": "Harry James Potter is born to James and Lily Potter.", "family": ["Potter"], "location": ["Godric’s Hollow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Birthday"}, {"year": 1981, "date": "1981-10-24", "event": "Fidelius Charm is cast to hide the Potters; Peter Pettigrew becomes Secret Keeper.", "family": ["Potter", "Marauders"], "location": ["Godric’s Hollow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1981, "date": "1981-10-31", "event": "Voldemort murders James and Lily; his curse rebounds from baby Harry, who becomes “The Boy Who Lived.”", "family": ["Potter", "Voldemort"], "location": ["Godric’s Hollow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1981, "date": "1981-11-01", "event": "Hagrid delivers Harry to Dumbledore at Privet Drive; Harry is left with the Dursleys.", "family": ["Potter", "Dursley", "Dumbledore"], "location": ["Little Whinging, Surrey"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1991, "date": "1991-07-24", "event": "Harry’s Hogwarts letters begin arriving.", "family": ["Potter", "Dursley", "Hogwarts"], "location": ["Privet Drive"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1991, "date": "1991-07-31", "event": "Hagrid tells Harry he is a wizard; Harry visits Diagon Alley, Gringotts, meets Draco, and gets Hedwig.", "family": ["Potter", "Hagrid", "Malfoy"], "location": ["Hut-on-the-Rock", "Diagon Alley"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1991, "date": "1991-09-01", "event": "Harry boards the Hogwarts Express, meets Ron properly, and arrives at Hogwarts.", "family": ["Potter", "Weasley", "Hogwarts"], "location": ["King’s Cross", "Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1992, "date": "1992-06", "event": "Harry defeats Quirrell/Voldemort and protects the Philosopher’s Stone.", "family": ["Potter", "Voldemort", "Hogwarts"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Month known"}, {"year": 1992, "date": "1992-08-04", "event": "Fred, George, and Ron rescue Harry from Privet Drive in the flying Ford Anglia.", "family": ["Weasley", "Potter", "Dursley"], "location": ["Privet Drive", "The Burrow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1992, "date": "1992–1993", "event": "Chamber of Secrets opens again; Ginny is possessed by Tom Riddle’s diary.", "family": ["Weasley", "Riddle", "Hogwarts"], "location": ["Hogwarts"], "source": null, "notes": "School year"}, {"year": 1993, "date": "1993-06", "event": "Harry destroys Tom Riddle’s diary with a basilisk fang and saves Ginny.", "family": ["Potter", "Weasley", "Riddle"], "location": ["Chamber of Secrets"], "source": null, "notes": "Month known"}, {"year": 1994, "date": "1994-11-24", "event": "First Task of the Triwizard Tournament: Harry faces the Hungarian Horntail.", "family": ["Potter", "Hogwarts", "Triwizard"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1995, "date": "1995-02-24", "event": "Second Task: Harry rescues Ron from the Black Lake.", "family": ["Potter", "Weasley", "Triwizard"], "location": ["Black Lake, Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1995, "date": "1995-06-24", "event": "Third Task; Cedric and Harry are taken to the Little Hangleton graveyard; Cedric is murdered and Voldemort is reborn.", "family": ["Potter", "Diggory", "Voldemort", "Death Eaters"], "location": ["Little Hangleton graveyard"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1995, "date": "1995–1996", "event": "Dumbledore’s Army forms under Umbridge’s regime.", "family": ["D.A.", "Hogwarts"], "location": ["Room of Requirement"], "source": null, "notes": "School year"}, {"year": 1996, "date": "1996-06", "event": "Battle of the Department of Mysteries; Sirius Black dies.", "family": ["Black", "Potter", "Order", "Death Eaters"], "location": ["Ministry of Magic"], "source": null, "notes": "Month known"}, {"year": 1996, "date": "1996-07-31", "event": "Harry turns 16 at the Burrow.", "family": ["Potter", "Weasley"], "location": ["The Burrow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-06-30", "event": "Harry and Dumbledore retrieve the fake locket Horcrux; Dumbledore is killed on the Astronomy Tower.", "family": ["Dumbledore", "Potter", "Malfoy", "Snape"], "location": ["Sea cave", "Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-07-27", "event": "Battle of the Seven Potters; Mad-Eye Moody and Hedwig die.", "family": ["Order", "Potter", "Death Eaters"], "location": ["Southern England"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-07-31", "event": "Harry comes of age at 17; the Trace is lifted.", "family": ["Potter", "Weasley"], "location": ["The Burrow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-08-01", "event": "Death Eaters attack Bill and Fleur’s wedding; the trio flee to Tottenham Court Road.", "family": ["Weasley", "Delacour", "Potter trio"], "location": ["The Burrow", "London"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-09-02", "event": "Harry, Ron, and Hermione infiltrate the Ministry and recover Slytherin’s locket.", "family": ["Potter trio", "Ministry", "Umbridge"], "location": ["Ministry of Magic"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-12-24", "event": "Harry and Hermione visit Godric’s Hollow and see James and Lily’s graves.", "family": ["Potter", "Granger"], "location": ["Godric’s Hollow"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1997, "date": "1997-12-26", "event": "Ron returns and destroys the locket Horcrux with Gryffindor’s sword.", "family": ["Weasley", "Potter trio"], "location": ["Forest of Dean"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1998, "date": "1998-03-30", "event": "Trio captured by Snatchers and taken to Malfoy Manor; Dobby rescues them.", "family": ["Potter trio", "Malfoy", "Lestrange", "Dobby"], "location": ["Malfoy Manor"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1998, "date": "1998-03-31", "event": "Dobby is buried near Shell Cottage.", "family": ["Dobby", "Potter", "Weasley"], "location": ["Shell Cottage"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1998, "date": "1998-05-01", "event": "Trio break into Gringotts and recover Hufflepuff’s Cup Horcrux.", "family": ["Potter trio", "Gringotts", "Lestrange vault"], "location": ["Diagon Alley", "Gringotts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 1998, "date": "1998-05-01–02", "event": "Battle of Hogwarts; defenders die, including Fred Weasley, Remus Lupin, Nymphadora Tonks, and Colin Creevey.", "family": ["Hogwarts", "Order", "D.A.", "Death Eaters"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Date range"}, {"year": 1998, "date": "1998-05-02", "event": "Voldemort’s soul fragment in Harry is destroyed in the Forbidden Forest; Voldemort dies in the Great Hall.", "family": ["Potter", "Voldemort"], "location": ["Forbidden Forest", "Great Hall"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}, {"year": 2007, "date": "2007", "event": "Harry becomes Head of the Auror Department.", "family": ["Potter", "Ministry"], "location": ["Ministry of Magic"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Year known"}, {"year": 2017, "date": "2017-09-01", "event": "“19 years later”: Harry, Ginny, Ron, Hermione, and Draco send the next generation to Hogwarts.", "family": ["Potter", "Weasley", "Granger", "Malfoy"], "location": ["King’s Cross, Platform 9¾"], "source": "https://www.hp-lexicon.org/timeline/character-timelines/harry-potter-timeline/", "notes": "Exact date"}];
+const BIRTHDAYS = [{"month": 1, "daySort": 9, "display": "Jan. 9", "character": "Severus Snape", "year": 1960, "family": ["Snape", "Prince", "Slytherin", "Order", "Death Eaters"], "location": ["Spinner’s End", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 1, "daySort": 26, "display": "Jan. 26", "character": "Gilderoy Lockhart", "year": null, "family": ["Lockhart", "Hogwarts staff"], "location": ["Hogwarts", "St Mungo’s"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 1, "daySort": 30, "display": "Jan. 30", "character": "Lily Evans Potter", "year": 1960, "family": ["Evans", "Potter", "Order"], "location": ["Cokeworth", "Godric’s Hollow"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 2, "daySort": 6, "display": "Feb. 6", "character": "Arthur Weasley", "year": null, "family": ["Weasley", "Ministry", "Order"], "location": ["The Burrow", "Ministry"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 2, "daySort": 13, "display": "Feb. 13", "character": "Luna Lovegood", "year": null, "family": ["Lovegood", "D.A.", "Ravenclaw"], "location": ["Lovegood home", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 2, "daySort": 24, "display": "Feb. 24", "character": "Newt Scamander", "year": 1897, "family": ["Scamander", "Magizoology"], "location": ["Dorset", "New York", "Europe"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 3, "daySort": 1, "display": "Mar. 1", "character": "Ron Weasley", "year": 1980, "family": ["Weasley", "Potter trio", "Gryffindor"], "location": ["The Burrow", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 3, "daySort": 9, "display": "Mar. 9", "character": "Sybill Trelawney", "year": null, "family": ["Trelawney", "Hogwarts staff"], "location": ["Hogwarts North Tower"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 3, "daySort": 10, "display": "Mar. 10", "character": "Remus Lupin", "year": 1960, "family": ["Lupin", "Marauders", "Order"], "location": ["Hogwarts", "Shrieking Shack"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 3, "daySort": 27, "display": "Mar. 27", "character": "James Potter", "year": 1960, "family": ["Potter", "Marauders", "Order"], "location": ["Godric’s Hollow", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 4, "daySort": 1, "display": "Apr. 1", "character": "Fred & George Weasley", "year": 1978, "family": ["Weasley", "Gryffindor", "D.A."], "location": ["The Burrow", "Hogwarts", "Diagon Alley"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 4, "daySort": 20, "display": "Apr. ?", "character": "Teddy Lupin", "year": 1998, "family": ["Lupin", "Tonks", "Potter godfamily"], "location": ["Britain"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Month/year only; day unspecified"}, {"month": 4, "daySort": 28, "display": "Apr. 28", "character": "Horace Slughorn", "year": null, "family": ["Slughorn", "Slytherin", "Hogwarts staff"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 5, "daySort": 2, "display": "May 2", "character": "Victoire Weasley", "year": null, "family": ["Weasley", "Delacour"], "location": ["Shell Cottage", "King’s Cross"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 5, "daySort": 15, "display": "May 15", "character": "Pomona Sprout", "year": null, "family": ["Sprout", "Hufflepuff", "Hogwarts staff"], "location": ["Hogwarts greenhouses"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 6, "daySort": 5, "display": "June 5", "character": "Draco Malfoy", "year": 1980, "family": ["Malfoy", "Slytherin"], "location": ["Malfoy Manor", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 6, "daySort": 23, "display": "June 23", "character": "Dudley Dursley", "year": 1980, "family": ["Dursley"], "location": ["Little Whinging"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Inferred"}, {"month": 6, "daySort": 28, "display": "June 28", "character": "Dobby", "year": null, "family": ["House-elf", "Malfoy household", "Free elf"], "location": ["Malfoy Manor", "Hogwarts", "Shell Cottage"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 7, "daySort": 30, "display": "July 30", "character": "Neville Longbottom", "year": 1980, "family": ["Longbottom", "Gryffindor", "D.A."], "location": ["Hogwarts", "St Mungo’s family connection"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 7, "daySort": 31, "display": "July 31", "character": "Harry Potter", "year": 1980, "family": ["Potter", "Gryffindor", "D.A.", "Auror"], "location": ["Godric’s Hollow", "Privet Drive", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 8, "daySort": 11, "display": "Aug. 11", "character": "Ginny Weasley", "year": 1981, "family": ["Weasley", "Potter", "Gryffindor", "D.A."], "location": ["The Burrow", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 8, "daySort": 18, "display": "Aug. 18", "character": "Celestina Warbeck", "year": null, "family": ["Warbeck", "wizarding celebrity"], "location": ["Wizarding Britain"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 8, "daySort": 19, "display": "Aug. 19", "character": "Tina Goldstein", "year": 1901, "family": ["Goldstein", "MACUSA", "Scamander"], "location": ["New York", "Britain"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 8, "daySort": 22, "display": "Aug. 22", "character": "Percy Weasley", "year": 1976, "family": ["Weasley", "Ministry"], "location": ["The Burrow", "Ministry"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 8, "daySort": 26, "display": "Aug. 26", "character": "Dolores Umbridge", "year": null, "family": ["Umbridge", "Ministry", "Hogwarts staff"], "location": ["Ministry", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 9, "daySort": 19, "display": "Sept. 19", "character": "Hermione Granger", "year": 1979, "family": ["Granger", "Potter trio", "Gryffindor", "D.A."], "location": ["Muggle Britain", "Hogwarts", "Ministry"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 9, "daySort": 25, "display": "Sept. 25", "character": "Garrick Ollivander", "year": null, "family": ["Ollivander", "wandmaker"], "location": ["Diagon Alley"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 9, "daySort": 26, "display": "Sept. 26", "character": "Quirinus Quirrell", "year": null, "family": ["Quirrell", "Hogwarts staff"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 10, "daySort": 4, "display": "Oct. 4", "character": "Minerva McGonagall", "year": 1935, "family": ["McGonagall", "Gryffindor", "Hogwarts staff", "Order"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 10, "daySort": 17, "display": "Oct. 17", "character": "Filius Flitwick", "year": null, "family": ["Flitwick", "Ravenclaw", "Hogwarts staff"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 10, "daySort": 20, "display": "Third week of Oct.", "character": "Angelina Johnson", "year": null, "family": ["Johnson", "Gryffindor", "D.A.", "Weasley by marriage"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Approximate"}, {"month": 10, "daySort": 30, "display": "Oct. 30", "character": "Molly Weasley", "year": "c. 1950", "family": ["Weasley", "Prewett", "Order"], "location": ["The Burrow"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Approximate year"}, {"month": 11, "daySort": 3, "display": "Nov. 3", "character": "Sirius Black", "year": null, "family": ["Black", "Marauders", "Order"], "location": ["Grimmauld Place", "Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 11, "daySort": 22, "display": "Nov. 22", "character": "Silvanus Kettleburn", "year": null, "family": ["Kettleburn", "Hogwarts staff"], "location": ["Hogwarts"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Year not listed"}, {"month": 11, "daySort": 29, "display": "Nov. 29", "character": "Bill Weasley", "year": 1970, "family": ["Weasley", "Curse-Breaker", "Order"], "location": ["The Burrow", "Gringotts", "Shell Cottage"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 12, "daySort": 6, "display": "Dec. 6", "character": "Rubeus Hagrid", "year": 1928, "family": ["Hagrid", "Hogwarts"], "location": ["Hogwarts grounds"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 12, "daySort": 12, "display": "Dec. 12", "character": "Charlie Weasley", "year": 1972, "family": ["Weasley", "dragon keeper"], "location": ["The Burrow", "Romania"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}, {"month": 12, "daySort": 31, "display": "Dec. 31", "character": "Tom Marvolo Riddle / Voldemort", "year": 1926, "family": ["Riddle", "Gaunt", "Slytherin", "Death Eaters"], "location": ["London orphanage", "Hogwarts", "Little Hangleton"], "source": "https://www.hp-lexicon.org/thing/calendar-of-birthdays/", "notes": "Canon / reference listed"}];
+const MUST_REMEMBER = [{"date": "1980-07-31", "why": "Harry Potter is born."}, {"date": "1981-10-31", "why": "Godric’s Hollow attack; Harry becomes The Boy Who Lived."}, {"date": "1995-06-24", "why": "Voldemort returns in the Little Hangleton graveyard."}, {"date": "1997-06-30", "why": "Albus Dumbledore dies at Hogwarts."}, {"date": "1998-05-02", "why": "Battle of Hogwarts and Voldemort’s defeat."}];
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-const quotes = [
-  { text: "Every clock-in is one step closer to the best kind of Friday.", attr: "— keep going ✌️" },
-  { text: "Summer hours aren't a reward for surviving — they're proof you already earned it.", attr: "— you've got this 🌞" },
-  { text: "The sun doesn't clock out early for nothing. Neither will you.", attr: "— almost there 🏄" },
-  { text: "Hard work in the morning is the price of a long, golden afternoon.", attr: "— stay the course 🌺" },
-  { text: "Every email, every meeting — all of it is leading to that first early Friday.", attr: "— worth every minute 🍹" },
-  { text: "That noon whistle on June 5th? It's practically already ringing.", attr: "— one more push 🎉" },
-  { text: "Summer doesn't ask permission. And neither should you — after noon on the 5th.", attr: "— hang in there 🌊" },
-  { text: "The best weeks end early on Friday. June 5th is your starting gun.", attr: "— eyes on the prize 🏖️" },
-  { text: "You are so close. The light at the end of the hallway is literally the sun.", attr: "— almost free ☀️" },
-];
+const state = {
+  tab: 'timeline',
+  search: '',
+  family: new Set(),
+  location: new Set(),
+};
 
-// Work minutes remaining from NOW until TARGET
-function getWorkMinsLeft() {
-  const now = new Date();
-  if (now >= TARGET) return { mins: 0, isAfter: true };
-  let mins = 0;
-  const cur = new Date(now);
-  while (cur < TARGET) {
-    const dow = cur.getDay();
-    if (dow >= 1 && dow <= 5) {
-      const ds = new Date(cur); ds.setHours(7,30,0,0);
-      const de = new Date(cur); de.setHours(16,0,0,0);
-      const ws = cur > ds ? cur : ds;
-      const we = de < TARGET ? de : TARGET;
-      if (we > ws) mins += (we - ws) / 60000;
-    }
-    cur.setDate(cur.getDate()+1);
-    cur.setHours(7,30,0,0);
-  }
-  return { mins: Math.max(0, mins), isAfter: false };
+function tagFrequency(items, key){
+  const counts = {};
+  items.forEach(e => e[key].forEach(t => counts[t] = (counts[t]||0) + 1));
+  return Object.entries(counts).sort((a,b) => b[1]-a[1]);
 }
 
-// Total work minutes from PROG_START to TARGET (fixed denominator)
-let TOTAL_WORK_MINS = 0;
-(function(){
-  const cur = new Date(PROG_START);
-  while (cur < TARGET) {
-    const dow = cur.getDay();
-    if (dow >= 1 && dow <= 5) {
-      const ds = new Date(cur); ds.setHours(7,30,0,0);
-      const de = new Date(cur); de.setHours(16,0,0,0);
-      const ws = cur > ds ? cur : ds;
-      const we = de < TARGET ? de : TARGET;
-      if (we > ws) TOTAL_WORK_MINS += (we - ws) / 60000;
-    }
-    cur.setDate(cur.getDate()+1);
-    cur.setHours(7,30,0,0);
+const ALL_ITEMS = [...TIMELINE, ...BIRTHDAYS];
+const FAMILY_FREQ = tagFrequency(ALL_ITEMS, 'family');
+const LOCATION_FREQ = tagFrequency(ALL_ITEMS, 'location');
+const FAMILY_TOP_N = 16;
+const LOCATION_TOP_N = 12;
+
+function renderChips(containerId, freqList, topN, selectedSet){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  freqList.forEach(([tag, count], i) => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (selectedSet.has(tag) ? ' selected' : '');
+    btn.textContent = tag;
+    btn.title = count + ' entries';
+    if(i >= topN) btn.dataset.overflow = '1';
+    btn.addEventListener('click', () => {
+      if(selectedSet.has(tag)) selectedSet.delete(tag); else selectedSet.add(tag);
+      renderAll();
+    });
+    el.appendChild(btn);
+  });
+}
+
+document.querySelectorAll('.show-all').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
+    const row = document.getElementById(target === 'family' ? 'familyChips' : 'locationChips');
+    row.classList.toggle('expanded');
+    btn.textContent = row.classList.contains('expanded') ? 'show fewer' : 'show all tags';
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  state.search = e.target.value.trim().toLowerCase();
+  renderAll();
+});
+document.getElementById('clearFilters').addEventListener('click', () => {
+  state.search = '';
+  state.family.clear();
+  state.location.clear();
+  document.getElementById('searchInput').value = '';
+  renderAll();
+});
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    state.tab = tab.dataset.tab;
+    document.getElementById('timelineView').classList.toggle('active', state.tab === 'timeline');
+    document.getElementById('birthdaysView').classList.toggle('active', state.tab === 'birthdays');
+    renderAll();
+  });
+});
+
+function matchesFilters(item){
+  if(state.family.size && !item.family.some(f => state.family.has(f))) return false;
+  if(state.location.size && !item.location.some(l => state.location.has(l))) return false;
+  if(state.search){
+    const hay = [
+      item.event || item.character || '',
+      ...(item.family||[]), ...(item.location||[]),
+      item.date || item.display || ''
+    ].join(' ').toLowerCase();
+    if(!hay.includes(state.search)) return false;
   }
-})();
+  return true;
+}
 
-function pad(n){ return String(n).padStart(2,'0'); }
-function commas(n){ return n.toLocaleString(); }
+function pillRow(item){
+  const fam = item.family.map(f => `<span class="pill fam">${f}</span>`).join('');
+  const loc = item.location.map(l => `<span class="pill loc">${l}</span>`).join('');
+  return `<div class="entry-tags">${fam}${loc}</div>`;
+}
 
-// Set quote (rotates hourly)
-const q = quotes[Math.floor(Date.now()/3600000) % quotes.length];
-document.getElementById('quote-text').textContent = q.text;
-document.getElementById('quote-attr').textContent  = q.attr;
+function renderTimeline(){
+  const el = document.getElementById('timelineEntries');
+  const filtered = TIMELINE.filter(matchesFilters);
+  if(!filtered.length){
+    el.innerHTML = '<p class="no-results">No events match your current filters.</p>';
+  } else {
+    el.innerHTML = filtered.map(item => `
+      <div class="entry-card">
+        <span class="entry-seal">${item.year}</span>
+        <span class="entry-date">${item.date}</span>
+        <p class="entry-event">${item.event}${item.source ? ` <a class="entry-source" href="${item.source}" target="_blank" rel="noopener">source</a>` : ''}</p>
+        ${pillRow(item)}
+        ${item.notes ? `<p class="entry-notes">${item.notes}</p>` : ''}
+      </div>
+    `).join('');
+  }
+  document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${TIMELINE.length} events`;
+}
 
-function tick() {
-  const now = new Date();
-
-  // ── Drought timer ──
-  const sinceSec = Math.floor((now - LAST_SH) / 1000);
-  document.getElementById('sd').textContent = commas(Math.floor(sinceSec / 86400));
-  document.getElementById('sh').textContent = pad(Math.floor((sinceSec % 86400) / 3600));
-  document.getElementById('sm').textContent = pad(Math.floor((sinceSec % 3600) / 60));
-  document.getElementById('ss').textContent = pad(sinceSec % 60);
-  document.getElementById('since-sub').textContent =
-    `That's ${commas(Math.floor(sinceSec/3600))} hours of full-day Fridays. The drought ends June 5th. 🌵`;
-
-  // ── Countdown to TARGET ──
-  const { mins: minsLeft, isAfter } = getWorkMinsLeft();
-
-  if (isAfter) {
-    ['d','h','m','s'].forEach(id => document.getElementById(id).textContent = '00');
-    document.getElementById('pct').textContent = '100%';
-    document.getElementById('bar').style.width = '100%';
-    document.getElementById('prog-sub').textContent = 'All work hours survived! 🎉';
-    document.getElementById('wh-big').innerHTML = '<em>0</em> hrs <em>0</em> min';
-    document.getElementById('today-prog').textContent = '🎉 Done!';
-    document.getElementById('today-label').textContent = 'summer hours started!';
-    document.getElementById('status-txt').textContent  = '🎉 Summer hours are HERE!';
-    document.getElementById('quote-text').textContent  = "You made it. Go enjoy that sunshine — you earned every single minute.";
-    document.getElementById('quote-attr').textContent  = "— Congratulations! 🌴🍹☀️";
+function renderBirthdays(){
+  const el = document.getElementById('birthdayMonths');
+  const filtered = BIRTHDAYS.filter(matchesFilters);
+  if(!filtered.length){
+    el.innerHTML = '<p class="no-results">No birthdays match your current filters.</p>';
+    document.getElementById('resultCount').textContent = `Showing 0 of ${BIRTHDAYS.length} birthdays`;
     return;
   }
-
-  const totalSec = Math.floor((TARGET - now) / 1000);
-  document.getElementById('d').textContent = Math.floor(totalSec / 86400);
-  document.getElementById('h').textContent = pad(Math.floor((totalSec % 86400) / 3600));
-  document.getElementById('m').textContent = pad(Math.floor((totalSec % 3600) / 60));
-  document.getElementById('s').textContent = pad(totalSec % 60);
-
-  // Progress bar
-  const workedMins = TOTAL_WORK_MINS - minsLeft;
-  const pct = TOTAL_WORK_MINS > 0
-    ? Math.min(100, Math.max(0, Math.round(100 * workedMins / TOTAL_WORK_MINS)))
-    : 0;
-  document.getElementById('pct').textContent      = pct + '%';
-  document.getElementById('bar').style.width      = pct + '%';
-  document.getElementById('prog-sub').textContent = `Since May 29 at 7:30 AM · ${pct}% of the final stretch survived`;
-
-  // Work hours left card
-  const wh = Math.floor(minsLeft / 60);
-  const wm = Math.round(minsLeft % 60);
-  document.getElementById('wh-big').innerHTML = `<em>${wh}</em> hrs <em>${wm}</em> min`;
-
-  // Today's card
-  const h   = now.getHours() + now.getMinutes()/60 + now.getSeconds()/3600;
-  const dow = now.getDay();
-  if (dow >= 1 && dow <= 5 && h >= WORK_START && h < WORK_END) {
-    const todayPct  = Math.round(100 * (h - WORK_START) / (WORK_END - WORK_START));
-    const minsToEnd = Math.round((WORK_END - h) * 60);
-    document.getElementById('today-prog').innerHTML    = `<em>${todayPct}%</em> done`;
-    document.getElementById('today-label').textContent = `${minsToEnd} min left today`;
-  } else if (dow >= 1 && dow <= 5 && h < WORK_START) {
-    document.getElementById('today-prog').textContent  = 'Not yet';
-    document.getElementById('today-label').textContent = 'work starts at 7:30 AM';
-  } else if (dow >= 1 && dow <= 5 && h >= WORK_END) {
-    document.getElementById('today-prog').textContent  = '✅ Done';
-    document.getElementById('today-label').textContent = "you're off the clock!";
-  } else {
-    document.getElementById('today-prog').textContent  = '🌊 Weekend';
-    document.getElementById('today-label').textContent = 'enjoy the time off!';
+  let html = '';
+  for(let m = 1; m <= 12; m++){
+    const monthItems = filtered.filter(b => b.month === m).sort((a,b) => a.daySort - b.daySort);
+    if(!monthItems.length) continue;
+    html += `<div class="month-block"><h3 class="month-title">${MONTH_NAMES[m-1]}</h3><div class="birthday-list">`;
+    monthItems.forEach(b => {
+      html += `
+        <div class="birthday-card">
+          <span class="bday-date">${b.display}</span>
+          <span class="bday-name">${b.character}</span>
+          ${b.year ? `<span class="bday-year">b. ${b.year}</span>` : `<span class="bday-year">year unconfirmed</span>`}
+          ${b.source ? `<a class="entry-source" href="${b.source}" target="_blank" rel="noopener">source</a>` : ''}
+          <div class="bday-tags">${b.family.map(f => `<span class="pill fam">${f}</span>`).join('')}${b.location.map(l => `<span class="pill loc">${l}</span>`).join('')}</div>
+        </div>`;
+    });
+    html += `</div></div>`;
   }
-
-  // Status pill
-  if (dow === 0 || dow === 6) {
-    document.getElementById('status-txt').textContent = "It's the weekend — you're off the clock 🎉";
-  } else if (h >= WORK_START && h < WORK_END) {
-    document.getElementById('status-txt').textContent = "On the clock right now · you've got this 💪";
-  } else if (h < WORK_START) {
-    document.getElementById('status-txt').textContent = "Before hours · enjoy your morning ☕";
-  } else {
-    document.getElementById('status-txt').textContent = "After hours · rest up for tomorrow 🌙";
-  }
+  el.innerHTML = html;
+  document.getElementById('resultCount').textContent = `Showing ${filtered.length} of ${BIRTHDAYS.length} birthdays`;
 }
 
-tick();
-setInterval(tick, 1000);
+function renderEssential(){
+  const el = document.getElementById('essentialRow');
+  el.innerHTML = MUST_REMEMBER.map(d => `
+    <div class="essential-card">
+      <p class="e-date">${d.date}</p>
+      <p class="e-why">${d.why}</p>
+    </div>
+  `).join('');
+}
+
+function renderAll(){
+  renderChips('familyChips', FAMILY_FREQ, FAMILY_TOP_N, state.family);
+  renderChips('locationChips', LOCATION_FREQ, LOCATION_TOP_N, state.location);
+  if(state.tab === 'timeline') renderTimeline(); else renderBirthdays();
+}
+
+document.getElementById('statEvents').textContent = TIMELINE.length;
+document.getElementById('statBdays').textContent = BIRTHDAYS.length;
+renderEssential();
+renderAll();
 </script>
 </body>
 </html>
